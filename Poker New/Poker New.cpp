@@ -49,13 +49,9 @@ public:
 		SetCursor(X, Y);
 		for (size_t i = 0; i <= 5; i++)
 		{
-			for (size_t i = 0; i <= 6; i++)
-			{
-				cout << "*";
-			}
 			for (size_t j = 0; j <= 6; j++)
 			{
-				if (i == 0 or i == 5)
+				if ((i == 0 or i == 5) or (j == 0 or j == 6))
 				{
 					cout << "*";
 				}
