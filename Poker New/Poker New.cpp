@@ -24,9 +24,53 @@ void SetCursor(int x, int y)
 	SetConsoleCursorPosition(hStdOut, coord);
 }
 
+class Cards
+{
+	int Nomel, Masty; 
+public:
+
+	void SetNomel(int Nomel)
+	{
+		if (Nomel > 1 and Nomel <= 14)
+		{
+			this->Nomel = Nomel;
+		}
+	}
+
+	void SetMasty(int Masty)
+	{
+		if (Masty >= 0 and Masty <= 3) //0-Черви, 1-Пики, 2-Бубны, 3-Крестье
+		{
+			this->Masty = Masty;
+		}
+	}
+
+	int GetNomel() const
+	{
+		return Nomel;
+	}
+
+	int GetMasty() const
+	{
+		return Masty;
+	}
+
+	Cards()
+	{
+		SetNomel(2);
+		SetMasty(0);
+	}
+
+	Cards(int Nomel, int Masty)
+	{
+		SetNomel(Nomel);
+		SetMasty(Masty);
+	}
+};
+
 class Table
 {
-	int X, Y, height = 25, width = 48;
+	int X = 14, Y = 8, height = 13, width = 48;
 public:
 	void setX(int X)
 	{
@@ -60,8 +104,7 @@ public:
 					cout << " ";
 				}
 			}
-			cout << endl;
-			SetCursor(X, Y++);
+			SetCursor(X, ++Y);
 		}
 	}
 
@@ -77,14 +120,14 @@ public:
 		cout << endl;
 		for (size_t i = 0; i < height; i++)
 		{
+			SetCursor(X, ++Y);
 			cout << "|";//рамка открывающая
 			for (size_t j = 0; j <= width-1; j++)
 			{
-
-
 				if (j == width-1)
 				{
 					cout << "|";//с закрывающийся рамкой
+					
 				}
 				else
 				{
@@ -94,6 +137,7 @@ public:
 			cout << endl;
 			
 		}
+		SetCursor(X, ++Y);
 		for (size_t i = 0; i <= width; i++)
 			{
 				cout << "-";
@@ -104,7 +148,59 @@ public:
 
 int main()
 {
+	Cards card;
+	vector<Cards> cards(52);
+	int count = 0;
+	for (int i = 0; i <= 3; i++)
+	{
+		for (size_t j = 2; j <= 14; j++)
+		{
+			if (count == 52)
+			{
+				break;
+			}
+			else
+			{
+				cards[count] = Cards(j, i);
+				count++;
+			}
+		}
+	}
+	/*for (int i = 0; i < 33; ++i)
+	{
+		cards[i].SetNomel((i % 13) + 2);
+		cards[i].SetMasty(i % 4);
+	}*/
 	Table t;
 	t.printCard();
-	t.printCardOnPos(4, 7);
+	//карты стола
+	for (size_t i = 18; i <= 50; i+=8)
+	{
+		t.printCardOnPos(i, 12);
+	}
+	//карты левого бота
+	for (size_t i = 9; i <= 17; i+=8)
+	{
+		t.printCardOnPos(1, i);
+	}
+	//карты верхнего бота
+	for (size_t i = 29; i <= 41; i+= 12)
+	{
+		t.printCardOnPos(i, 1);
+	}
+	//карты правого бота
+	for (size_t i = 9; i <= 17; i += 8)
+	{
+		t.printCardOnPos(66, i);
+	}
+	//наши карты
+	for (size_t i = 29; i <= 41; i += 12)
+	{
+		t.printCardOnPos(i, 24);
+	}
+	SetCursor(0, 26);
+	for (int i = 0; i < 52; i++)
+	{
+		cout << "Card " << i + 1 << ": Nomel = " << cards[i].GetNomel() << ", Masty = " << cards[i].GetMasty() << endl;
+	}
 }
